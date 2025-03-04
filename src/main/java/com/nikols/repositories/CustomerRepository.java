@@ -1,10 +1,17 @@
-package com.nikols;
+package com.nikols.repositories;
 
-import com.nikols.models.Customer;
+import com.nikols.models.entities.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
+@Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {   //Hay que poner el name del entity - Customer - y luego el tipo de Id - Integer
-
+    Optional<Customer> findByEmail(String email); // Spring genera la consulta automáticamente
+    List<Customer> findByName(String name);
+    List<Customer> findByAge(Integer age);
 
 }
 

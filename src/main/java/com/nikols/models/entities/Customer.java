@@ -1,18 +1,13 @@
-package com.nikols.models;
+package com.nikols.models.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Objects;
-
-//Esto es de Lombok para ahorrar codigo innecesario de [1]
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
-
 @Entity //sino es solo un objeto, con @Entity es una entidad
+//Esto es de Lombok para ahorrar codigo innecesario de [1]
+
 @Data //-> getters, setters, toStrings, equals, hashCode
 @NoArgsConstructor //-> constructor vacio
 @AllArgsConstructor //-> constructor entero
