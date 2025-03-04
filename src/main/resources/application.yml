@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5332/customer  # 📌 URL de conexión a la base de datos PostgreSQL en Docker
+    username: user   # 📌 Usuario de la base de datos (debe coincidir con POSTGRES_USER en docker-compose.yml)
+    password: password   # 📌 Contraseña del usuario (debe coincidir con POSTGRES_PASSWORD en docker-compose.yml)
+  jpa:
+    hibernate:
+      ddl-auto: create-drop  # 📌 Crea las tablas al iniciar y las borra al detener la aplicación
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect  # 📌 Dialecto de Hibernate para PostgreSQL
+        format_sql: true  # 📌 Formatea las consultas SQL para que sean más legibles en la consola
+    show-sql: true  # 📌 Muestra las consultas SQL en la consola
+  main:
+    web-application-type: servlet  # 📌 Especifica que esta es una aplicación web basada en servlets
+
+# 🔹 COMANDOS PARA UTILIZAR LA BASE DE DATOS EN POSTGRESQL (Docker)
+
+# 1️⃣ Acceder al contenedor de PostgreSQL
+# docker exec -it <nombre-del-contenedor> bash
+# 📌 Si no sabes el nombre del contenedor, usa: docker ps
+
+# 2️⃣ Acceder a PostgreSQL dentro del contenedor
+# psql -U <nombre_de_usuario>
+# 🔹 <nombre_de_usuario> debe ser el mismo que definiste en docker-compose.yml (POSTGRES_USER)
+
+# 3️⃣ Ver una lista de bases de datos disponibles
+# \l
+
+# 4️⃣ Crear una nueva base de datos
+# CREATE DATABASE <nombre_de_db>;
+# Ejemplo: CREATE DATABASE customer;
+
+# 5️⃣ Conectarse a la base de datos recién creada
+# \c <nombre_de_db>
+# Ejemplo: \c customer
+# 📌 Si la conexión es exitosa, verás un mensaje como:
+# "You are now connected to database 'customer' as user 'user'."
+
+#6 Para crear manualmente cosas en la base de datos:
+#/d customer, nos da lo que necesitamos especificar para crear el elemento en la base de datos
+#INSERT INTO <nombre_db>(valores necesarios) -> INSERT INTO customer(id, name, email, age)
+#VALUES (nextval('customer_id_sequence'), 'Alex, 'alex@gmail.com', 22); -> el id es asi porque lo hemos definido con el sequence generator etc. Mira Customer.java para verlo. El resto son STRING, STRING, INTEGER.
+#NO TE OLVIDES DE LOS - ; - SINO NO FUNCIONARÁ
+#tendrá que salir INSERT 0 1 -> éxito
+
+#select * from <nombre_db> -> seleccionar todos los elementos.
