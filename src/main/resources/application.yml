@@ -3,9 +3,12 @@ spring:
     url: jdbc:postgresql://localhost:5332/customer  # 📌 URL de conexión a la base de datos PostgreSQL en Docker
     username: user   # 📌 Usuario de la base de datos (debe coincidir con POSTGRES_USER en docker-compose.yml)
     password: password   # 📌 Contraseña del usuario (debe coincidir con POSTGRES_PASSWORD en docker-compose.yml)
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.xml
   jpa:
     hibernate:
-      ddl-auto: create-drop  # 📌 Crea las tablas al iniciar y las borra al detener la aplicación
+      ddl-auto: none  # 📌 Crea las tablas al iniciar y las borra al detener la aplicación / none si tengo Liquidbase para no tener conflictos
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect  # 📌 Dialecto de Hibernate para PostgreSQL

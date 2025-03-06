@@ -2,20 +2,24 @@ package com.nikols.service;
 
 import com.nikols.models.entities.Customer;
 import com.nikols.models.requests.CustomerRequest;
+import com.nikols.models.responses.CustomerResponse;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface CustomerService {
-    List<Customer> getAllCustomers();
-    Customer getCustomerById(Integer id);
-    Customer saveCustomer(CustomerRequest request);
+    List<CustomerResponse> getAllCustomers();
+    CustomerResponse getCustomerById(Integer id);
+    CustomerResponse saveCustomer(CustomerRequest request);
     void deleteCustomerById(Integer id);
 
+    CustomerResponse modifyCustomerEmail(Integer id, String newEmail);
+
     //Querys personalizados
-    Optional<Customer> getCustomerByEmail(String email);
-    List<Customer> getCustomersByName(String name);
+    Optional<CustomerResponse> getCustomerByEmail(String email);
+    List<CustomerResponse> getCustomersByName(String name);
+    List<CustomerResponse> getCustomersByAge(Integer age);
 
-    List<Customer> getCustomersByAge(Integer age);
-
+    CustomerResponse modifyCustomer(Integer id, Map<String, Object> updates);
 }

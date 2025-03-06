@@ -1,5 +1,6 @@
 package com.nikols.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,10 +8,11 @@ import lombok.NoArgsConstructor;
 
 @Entity //sino es solo un objeto, con @Entity es una entidad
 //Esto es de Lombok para ahorrar codigo innecesario de [1]
-
+@Table(name = "customers") //Para crearlo en la base de datos
 @Data //-> getters, setters, toStrings, equals, hashCode
 @NoArgsConstructor //-> constructor vacio
 @AllArgsConstructor //-> constructor entero
+@JsonIgnoreProperties(ignoreUnknown = true) //Ignorar campos desconocidos.
 public class Customer {
 
     @Id

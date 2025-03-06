@@ -2,11 +2,13 @@ package com.nikols.controllers;
 
 import com.nikols.models.entities.Customer;
 import com.nikols.models.requests.CustomerRequest;
+import com.nikols.models.responses.CustomerResponse;
 import com.nikols.service.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -31,38 +33,47 @@ public class CustomerController {
     //INYECTAR -> El framework crea automáticamente un objeto y lo proporciona a las partes del código que lo necesitan.
 
     @GetMapping
-    public List<Customer> getAllCustomers() {
+    public List<CustomerResponse> getAllCustomers() {
         return customerService.getAllCustomers();//[3]
     }
 
     @GetMapping("/{id}")
-    public Customer findCustomerById(@PathVariable("id") Integer id){
+    public CustomerResponse findCustomerById(@PathVariable("id") Integer id){
         return customerService.getCustomerById(id);
     }
 
     @PostMapping
-    public Customer createCustomer(@Valid @RequestBody CustomerRequest request){
+    public CustomerResponse createCustomer(@Valid @RequestBody CustomerRequest request){
         return customerService.saveCustomer(request);
+    }
+
+    @GetMapping("/email/{email}")
+    public Optional<CustomerResponse> findCustomerByEmail(@PathVariable("email") String email){
+        return customerService.getCustomerByEmail(email);
+    }
+
+    @GetMapping("/name/{name}")
+    public List<CustomerResponse> findCustomersByName(@PathVariable("name") String name){
+        return customerService.getCustomersByName(name);
+    }
+
+    @GetMapping("/{age}")
+    public List<CustomerResponse> findCustomersByAge(@PathVariable("age") Integer age){
+        return customerService.getCustomersByAge(age);
+    }
+
+    @PatchMapping("/{id}/{newEmail}")
+    public CustomerResponse modifyCustomerEmail(@PathVariable("id") Integer id, @PathVariable("newEmail") String email){
+        return customerService.modifyCustomerEmail(id, email);
+    }
+
+    @PatchMapping("/{id}")
+    public CustomerResponse modifyCustomer(@PathVariable("id") Integer id,  @RequestBody Map<String, Object> updates){
+        return customerService.modifyCustomer(id, updates);
     }
 
     @DeleteMapping("/{id}")
     public void deleteCustomer(@PathVariable("id") Integer id){
         customerService.deleteCustomerById(id);
     }
-
-    @GetMapping("/{email}")
-    public Optional<Customer> findCustomerByEmail(@PathVariable("email") String email){
-        return customerService.getCustomerByEmail(email);
-    }
-
-    @GetMapping("/{name}")
-    public List<Customer> findCustomersByName(@PathVariable("name") String name){
-        return customerService.getCustomersByName(name);
-    }
-
-    @GetMapping("/{age}")
-    public List<Customer> findCustomersByAge(@PathVariable("age") Integer age){
-        return customerService.getCustomersByAge(age);
-    }
-
 }
