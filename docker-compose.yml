@@ -1,10 +1,13 @@
+version: '3.8'
+
 services:
   db:
     container_name: postgres
-    image: postgres
+    image: postgres:latest
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
+      POSTGRES_DB: shop  # Se creará automáticamente la base de datos "customer"
       PGDATA: /data/postgres
     volumes:
       - db:/data/postgres

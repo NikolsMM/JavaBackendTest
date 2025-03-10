@@ -103,7 +103,19 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>4.23.1</version>
+				<configuration>
+					<changeLogFile>db/changelog/db.changelog-master.xml</changeLogFile>
+					<url>jdbc:postgresql://localhost:5332/shop</url>
+					<username>user</username>
+					<password>password</password>
+					<driver>org.postgresql.Driver</driver>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>

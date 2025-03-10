@@ -5,5 +5,18 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
+    <!-- Fíjate que esto es lo que incluyes para definir las bases de datos-->
+    <!-- Cada db.changelog-ijk.xml puede tener varias cosas pero se suele separar por responsabilidad-->
+    <!-- Por eso creo la otra con product-->
     <include file="db/changelog/db.changelog-001.xml"/>
+    <include file="db/changelog/db.changelog-002.xml"/>
+    <include file="db/changelog/db.changelog-003.xml"/>
+
 </databaseChangeLog>
+
+<!--
+
+Los checkSums es una base de datos que crea liquibase!!
+
+
+-->

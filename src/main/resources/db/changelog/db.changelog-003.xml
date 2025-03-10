@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="3" author="Nikols">
+        <!-- Agregar columna customer_id en la tabla products -->
+        <addColumn tableName="products">
+            <column name="customer_id" type="int"/>
+        </addColumn>
+
+        <!-- Definir clave foránea para conectar products con customers -->
+        <addForeignKeyConstraint
+                constraintName="fk_product_customer"
+                baseTableName="products"
+                baseColumnNames="customer_id"
+                referencedTableName="customers"
+                referencedColumnNames="customer_id"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,12 +1,15 @@
 package com.nikols.service;
 
-
 import com.nikols.mapper.CustomerMapper;
 import com.nikols.models.entities.Customer;
 import com.nikols.models.requests.CustomerRequest;
 import com.nikols.models.responses.CustomerResponse;
 import com.nikols.repositories.CustomerRepository;
 import com.nikols.utils.JsonHelper;
+import jakarta.transaction.Transactional; //[1]
+// [1] = Se utitiliza para que si hay un error al ejecutar esa acción en la base de datos, se revientan todos los cambios. Ejemplo;
+// Imagínate que guardas tres campos nuevos y el último da error. Tendrías que borrar los dos anteriores proque sino habrías añadido 5 en total.
+// Lo que hace Transactional es que como ha habido un error, revierte todos así no tienes que preocuparte. Vuelves a empezar y ya está.
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public List<CustomerResponse> getAllCustomers() {
         return customerRepository.findAll()
                 .stream()
@@ -34,6 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public CustomerResponse getCustomerById(Integer id) {
         return customerRepository.findById(id)
                 .map(customerMapper::toResponse)
@@ -41,6 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public CustomerResponse saveCustomer(CustomerRequest request) {
         Customer customer = customerMapper.toEntity(request);
         Customer savedCustomer = customerRepository.save(customer);
@@ -48,25 +54,29 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public void deleteCustomerById(Integer id) {
         customerRepository.deleteById(id);
     }
 
     @Override
+    @Transactional
     public Optional<CustomerResponse> getCustomerByEmail(String email) {
         return customerRepository.findByEmail(email)
                 .map(customerMapper::toResponse);
     }
 
     @Override
+    @Transactional
     public List<CustomerResponse> getCustomersByName(String name) {
-        return customerRepository.findByName(name)
+        return customerRepository.findByFirstName(name)
                 .stream()
                 .map(customerMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
+    @Transactional
     public List<CustomerResponse> getCustomersByAge(Integer age) {
         return customerRepository.findByAge(age)
                 .stream()
@@ -78,6 +88,7 @@ public class CustomerServiceImpl implements CustomerService {
     //NOTAS SOBRE OPTIONAL : no te devuelve el valor sino un Optional. por eso teno que hacer el orElseThrow ( devuelve el valor si existe y sino manda un NoSuchElementExceptio)
     // en este caso mandamos un error personalizado.
     @Override
+    @Transactional
     public CustomerResponse modifyCustomerEmail(Integer id, String newEmail){
         Optional<Customer> customer = customerRepository.findById(id);
         Customer modifiedCustomer = customer.orElseThrow(() -> new RuntimeException("Customer with  " + id + " does not exist."));
@@ -87,6 +98,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public CustomerResponse modifyCustomer(Integer id, Map<String, Object> updates) {
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Customer with  " + id + " does not exist."));
@@ -127,3 +139,4 @@ public class CustomerServiceImpl implements CustomerService {
 // findFirst() → Obtiene el primer elemento.
 // findAny() → Obtiene cualquier elemento.
 
+//

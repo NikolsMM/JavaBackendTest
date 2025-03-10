@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {   //Hay que poner el name del entity - Customer - y luego el tipo de Id - Integer
     Optional<Customer> findByEmail(String email); // Spring genera la consulta automáticamente
-    List<Customer> findByName(String name);
+    List<Customer> findByFirstName(String name);
     List<Customer> findByAge(Integer age);
 
 }
@@ -18,7 +18,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {  
 // El CRUD es -> Create Read Update Delete.
 // Esto se llama Repository porque al extender JpaRepository con Customer e Integer lo que hacemos es hacer que
 // Spring Boot genere e implemente métodos básicos para hacer el CRUD sin tener que escribir el código manualmente
-// por ejemplo nos da un
+// por ejemplo nos da t odo esto
 // save(Customer customer) -> guarda un cliente nuevo | actualiza si existe.
 // findById(Integer id)
 // findAll()

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity //sino es solo un objeto, con @Entity es una entidad
 //Esto es de Lombok para ahorrar codigo innecesario de [1]
 @Table(name = "customers") //Para crearlo en la base de datos
@@ -16,18 +18,19 @@ import lombok.NoArgsConstructor;
 public class Customer {
 
     @Id
-    @SequenceGenerator(
-            name = "customer_id_sequence",
-            sequenceName = "customer_id_sequence"
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "customer_id_sequence"
-    )
-    private Integer id;
-    private String name;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "customer_id")
+    private Integer customerId;
+    @Column(name = "first_name")
+    private String firstName;
     private String email;
     private Integer age;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //Porque ONE customer llega a MANY products
+    //mappedBy para que no se cree una clave foranea extra porque ya la estamos creando en Products
+    //cascade -> si se borra un customer,se borran sus products.
+    private List<Product> customerProducts;
 
     /* To do esto es [1]
     public Integer getId() {

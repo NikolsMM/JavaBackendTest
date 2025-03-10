@@ -7,10 +7,10 @@
 
     <changeSet id="1" author="Nikols">
         <createTable tableName="customers">
-            <column name="id" type="int" autoIncrement="true">
+            <column name="customer_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(255)">
+            <column name="first_name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="email" type="varchar(255)">

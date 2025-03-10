@@ -1,6 +1,5 @@
 package com.nikols.controllers;
 
-import com.nikols.models.entities.Customer;
 import com.nikols.models.requests.CustomerRequest;
 import com.nikols.models.responses.CustomerResponse;
 import com.nikols.service.CustomerService;
@@ -14,7 +13,6 @@ import java.util.Optional;
 
 @RestController //Esto hace que to do lo que este anotado con @GetMapping, @Post etc sean cosas el usuario pueda acceder
 @RequestMapping("api/v1/customers") //Como está al root level, cada vez que alguien vaya a este link, se llama al GetMapping y recibirá un empty List por [3]
-
 public class CustomerController {
 
     private final CustomerService customerService;

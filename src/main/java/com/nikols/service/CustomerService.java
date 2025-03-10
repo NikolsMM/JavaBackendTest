@@ -3,6 +3,7 @@ package com.nikols.service;
 import com.nikols.models.entities.Customer;
 import com.nikols.models.requests.CustomerRequest;
 import com.nikols.models.responses.CustomerResponse;
+import com.nikols.models.responses.ProductResponse;
 
 import java.util.List;
 import java.util.Map;
