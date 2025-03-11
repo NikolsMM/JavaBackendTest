@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {   //Hay que poner el name del entity - Customer - y luego el tipo de Id - Integer
     Optional<Customer> findByEmail(String email); // Spring genera la consulta automáticamente
-    List<Customer> findByFirstName(String name);
+    List<Customer> findByFirstName(String firstName);
     List<Customer> findByAge(Integer age);
 
 }

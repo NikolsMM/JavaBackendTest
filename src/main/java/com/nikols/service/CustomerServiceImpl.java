@@ -56,6 +56,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public void deleteCustomerById(Integer id) {
+        if (!customerRepository.existsById(id)) {
+            throw new RuntimeException("Customer with id: " + id + " does not exist.");
+        }
         customerRepository.deleteById(id);
     }
 
@@ -84,12 +87,14 @@ public class CustomerServiceImpl implements CustomerService {
                 .collect(Collectors.toList());
     }
 
-
     //NOTAS SOBRE OPTIONAL : no te devuelve el valor sino un Optional. por eso teno que hacer el orElseThrow ( devuelve el valor si existe y sino manda un NoSuchElementExceptio)
     // en este caso mandamos un error personalizado.
     @Override
     @Transactional
     public CustomerResponse modifyCustomerEmail(Integer id, String newEmail){
+        if (newEmail == null || newEmail.isBlank()) {
+            throw new RuntimeException("Email cannot be null or empty.");
+        }
         Optional<Customer> customer = customerRepository.findById(id);
         Customer modifiedCustomer = customer.orElseThrow(() -> new RuntimeException("Customer with  " + id + " does not exist."));
         modifiedCustomer.setEmail(newEmail);
@@ -107,10 +112,11 @@ public class CustomerServiceImpl implements CustomerService {
             return customerMapper.toResponse(customer);
         }
 
-        Customer updatedCustomer = JsonHelper.mergeJson(customer, updates, Customer.class);
+        JsonHelper.mergeJsonIntoObject(customer, updates); // 🔹 Modifica la misma instancia -> así las relaciones no se sobreescriben.
 
-        Customer savedCustomer = customerRepository.save(updatedCustomer);
-        return customerMapper.toResponse(savedCustomer);
+        customerRepository.save(customer); // Hibernate detectará los cambios automáticamente
+
+        return customerMapper.toResponse(customer);
     }
 }
 

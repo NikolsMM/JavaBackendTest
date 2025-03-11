@@ -10,27 +10,37 @@ public class JsonHelper {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static <T> T mergeJson(T originalObject, Map<String, Object> updates, Class<T> clazz) {
+    public static <T> void mergeJsonIntoObject(T targetObject, Map<String, Object> updates) {
         try {
-            // Convertimos el objeto original a un ObjectNode (funciona como JSON editable)
-            ObjectNode objectNode = objectMapper.valueToTree(originalObject);
+            ObjectNode objectNode = (ObjectNode) objectMapper.valueToTree(targetObject);
 
-            // Fusionamos los valores del `updates` en el JSON a través de putPOJO que maneja los datos sin transformarlos como lo haria un put ( que trasnfiorma a strings )
             updates.forEach((key, value) -> {
-                if (value != null) {
-                    objectNode.putPOJO(key, value);
-                } else {
-                    objectNode.putNull(key);
+                if (objectNode.has(key)) { // Solo actualizar claves existentes
+                    if (value != null) {
+                        if (value instanceof Number) {
+                            // Convertir números a su tipo correcto
+                            if (value instanceof Integer) {
+                                objectNode.put(key, (Integer) value);
+                            } else if (value instanceof Double) {
+                                objectNode.put(key, (Double) value);
+                            } else {
+                                objectNode.put(key, ((Number) value).doubleValue());
+                            }
+                        } else {
+                            objectNode.putPOJO(key, value);
+                        }
+                    } else {
+                        objectNode.putNull(key);
+                    }
                 }
             });
-            //Si mandamos algo que es null intencionadamente, se sobreescribe como null.
-            //Es decir, { "name":"UWU" } sobreescribirá name |--> UWU y el resto campo |--> campo.
-            //Sin embargo, {"name": ""/null} hará name |--> ""/null u el resto campo |--> campo
 
-            // Convertimos de nuevo el JSON actualizado a un objeto del tipo `T`
-            return objectMapper.treeToValue(objectNode, clazz);
+            objectMapper.readerForUpdating(targetObject).readValue(objectNode.toString());
+
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error processing JSON: " + e.getMessage(), e);
         }
     }
+
+
 }

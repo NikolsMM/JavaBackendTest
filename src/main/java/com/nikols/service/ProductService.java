@@ -10,7 +10,6 @@ import java.util.Optional;
 
 public interface ProductService {
     List<ProductResponse> getAllProducts();
-
     ProductResponse getProductById(Integer id);
     ProductResponse saveProduct(ProductRequest request);
     void deleteProductById(Integer id);
@@ -20,5 +19,6 @@ public interface ProductService {
     Optional<ProductResponse> getProductByName(String name);
     List<ProductResponse> getProductsByColor(String color);
     ProductResponse modifyProduct(Integer id, Map<String, Object> updates);
-    List<ProductResponse> findByCustomerCustomerId (Integer customerId);
+    ProductResponse assignProductToCustomer(Integer productId, Integer customerId);
+    List<ProductResponse> findByCustomer_CustomerId (Integer customerId);
 }

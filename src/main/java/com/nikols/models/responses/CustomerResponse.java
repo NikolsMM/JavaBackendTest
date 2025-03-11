@@ -15,7 +15,8 @@ public class CustomerResponse {
     private String firstName;
     private String email;
     private Integer age;
-    private List<ProductResponse> customerProducts;
+    private List<ProductResponse> products;
     //Para no crear bucles de JSON infinitos, podemos ProductResponse en lugar de Product.
     //En Products, ponemos un Customer customer y no response/request porque ya estará creado.
+
 }

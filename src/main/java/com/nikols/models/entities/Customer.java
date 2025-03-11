@@ -30,7 +30,7 @@ public class Customer {
     //Porque ONE customer llega a MANY products
     //mappedBy para que no se cree una clave foranea extra porque ya la estamos creando en Products
     //cascade -> si se borra un customer,se borran sus products.
-    private List<Product> customerProducts;
+    private List<Product> products;
 
     /* To do esto es [1]
     public Integer getId() {

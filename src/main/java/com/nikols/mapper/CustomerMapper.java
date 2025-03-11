@@ -11,7 +11,7 @@ import org.mapstruct.factory.Mappers;
 public interface CustomerMapper {
     CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
-    @Mapping(target = "customerProducts", source = "customerProducts") // Mapea la lista de productos
+    @Mapping(target = "products", source = "products") // Mapea la lista de productos
     CustomerResponse toResponse(Customer customer);
 
     @Mapping(target = "customerId", ignore = true) // Lo ignoramos porque el ID lo genera la BD

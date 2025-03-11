@@ -11,6 +11,7 @@
     <include file="db/changelog/db.changelog-001.xml"/>
     <include file="db/changelog/db.changelog-002.xml"/>
     <include file="db/changelog/db.changelog-003.xml"/>
+    <include file="db/changelog/db.changelog-004.xml"/>
 
 </databaseChangeLog>
 

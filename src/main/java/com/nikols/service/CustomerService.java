@@ -14,13 +14,11 @@ public interface CustomerService {
     CustomerResponse getCustomerById(Integer id);
     CustomerResponse saveCustomer(CustomerRequest request);
     void deleteCustomerById(Integer id);
-
     CustomerResponse modifyCustomerEmail(Integer id, String newEmail);
 
     //Querys personalizados
     Optional<CustomerResponse> getCustomerByEmail(String email);
     List<CustomerResponse> getCustomersByName(String name);
     List<CustomerResponse> getCustomersByAge(Integer age);
-
     CustomerResponse modifyCustomer(Integer id, Map<String, Object> updates);
 }

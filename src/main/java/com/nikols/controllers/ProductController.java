@@ -41,7 +41,7 @@ public class ProductController {
     }
 
     @GetMapping("/color/{color}")
-    public List<ProductResponse> findProductByEmail(@PathVariable("color") String color){
+    public List<ProductResponse> findProductsByColor(@PathVariable("color") String color){
         return productService.getProductsByColor(color);
     }
 
@@ -65,8 +65,14 @@ public class ProductController {
         productService.deleteProductById(id);
     }
 
+
+    @PatchMapping("/assign-product-to-customer/{productId}/{customerId}")
+    public ProductResponse assignProductToCustomer(@PathVariable("productId") Integer productId, @PathVariable("customerId") Integer customerId ){
+        return productService.assignProductToCustomer(productId, customerId);
+    }
+
     @GetMapping("/customer-products/{id}")
-    public List<ProductResponse> findByCustomerCustomerId (@PathVariable("id") Integer customerId){
-        return productService.findByCustomerCustomerId(customerId);
+    public List<ProductResponse> findByCustomer_CustomerId (@PathVariable("id") Integer customerId){
+        return productService.findByCustomer_CustomerId(customerId);
     }
 }

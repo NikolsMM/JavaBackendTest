@@ -47,18 +47,10 @@ public class ProductServiceImpl implements ProductService{
                 .orElse(null);
     }
 
-    //@TODO tenego que hacer que el customerId no sea request pero que se le pueda mete ry lo busque etc.
     @Override
     @Transactional
     public ProductResponse saveProduct(ProductRequest request) {
         Product product = productMapper.toEntity(request);
-
-        if (request.getCustomerId() != null) {
-            Customer customer = customerRepository.findById(request.getCustomerId())
-                    .orElseThrow(() -> new RuntimeException("Customer not found"));
-            product.setCustomer(customer);
-        }
-
         Product savedProduct = productRepository.save(product);
         return productMapper.toResponse(savedProduct);
     }
@@ -72,6 +64,9 @@ public class ProductServiceImpl implements ProductService{
     @Override
     @Transactional
     public ProductResponse modifyProductPrice(Integer id, Double newPrice){
+        if (newPrice == null || newPrice <= 0) {
+            throw new RuntimeException("Price must be greater than 0.");
+        }
         Product product = productRepository
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("Product with id: " + id + " not found"));
@@ -110,22 +105,39 @@ public class ProductServiceImpl implements ProductService{
     @Transactional
     public ProductResponse modifyProduct(Integer id, Map<String, Object> updates) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product with  " + id + " does not exist."));
+                .orElseThrow(() -> new RuntimeException("Product with id " + id + " does not exist."));
 
         if (updates == null || updates.isEmpty()) {
             return productMapper.toResponse(product);
         }
 
-        Product updatedProduct = JsonHelper.mergeJson(product, updates, Product.class);
+        JsonHelper.mergeJsonIntoObject(product, updates); // 🔹 Modifica la misma instancia
 
-        Product savedProduct = productRepository.save(updatedProduct);
+        productRepository.save(product); // Hibernate detectará los cambios automáticamente
+
+        return productMapper.toResponse(product);
+    }
+
+    @Override
+    @Transactional
+    public ProductResponse assignProductToCustomer(Integer productId, Integer customerId){
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product with id: " + productId + " not found."));
+
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer with id: " + customerId + " not found."));
+        product.setCustomer(customer);
+        Product savedProduct = productRepository.save(product);
         return productMapper.toResponse(savedProduct);
     }
 
     @Override
     @Transactional
-    public List <ProductResponse> findByCustomerCustomerId (Integer customerId) {
-        return productRepository.findByCustomerCustomerId(customerId)
+    public List <ProductResponse> findByCustomer_CustomerId (Integer customerId) {
+        if (customerRepository.findById(customerId).isEmpty() ){
+            throw new RuntimeException("Customer with id: " + customerId + " not found");
+        }
+        return productRepository.findByCustomer_CustomerId(customerId)
                 .stream()
                 .map(productMapper::toResponse)
                 .collect(Collectors.toList());

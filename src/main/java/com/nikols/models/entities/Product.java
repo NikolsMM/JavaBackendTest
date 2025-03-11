@@ -1,5 +1,6 @@
 package com.nikols.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class Product {
     private Integer quantity;
 
     @ManyToOne(fetch = FetchType.LAZY) //Porque MANY products llegan a ONE customer, el Lazy por si hay muchos tipos. Sino por defecto es EAGER
-    @JoinColumn(name = "customer_id", nullable = true) //Clave foranea
+    @JoinColumn(name = "customer_id", nullable = true) //Clave foranea, nullabe=true significa que un producto lo podemos dejar sin customerId. Si estuviera en false, forzamos a que to do producto tenga que tener un customerId asociado-
+    @JsonIgnore //Para evitar bucles infinitos de Json  como -> @JsonManagedReference + @JsonBackReference //Evita recursión infinita de customer -> products -> for each product un customer -> products ...
     private Customer customer;
 }

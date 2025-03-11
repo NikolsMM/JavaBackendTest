@@ -15,7 +15,7 @@ public class ProductRequest {
     private String productName;
 
     @NotBlank(message = "El color es obligatorio")
-    @Size(min = 3, max = 50, message = "El nombre debe tener entre 3 y 50 caracteres")
+    @Size(min = 3, max = 50, message = "El color debe tener entre 3 y 50 caracteres")
     private String color;
 
     @NotNull(message = "Debes especificar el precio")

@@ -55,7 +55,7 @@ public class CustomerController {
         return customerService.getCustomersByName(name);
     }
 
-    @GetMapping("/{age}")
+    @GetMapping("/age/{age}")
     public List<CustomerResponse> findCustomersByAge(@PathVariable("age") Integer age){
         return customerService.getCustomersByAge(age);
     }
@@ -65,7 +65,7 @@ public class CustomerController {
         return customerService.modifyCustomerEmail(id, email);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/id/{id}")
     public CustomerResponse modifyCustomer(@PathVariable("id") Integer id,  @RequestBody Map<String, Object> updates){
         return customerService.modifyCustomer(id, updates);
     }
